@@ -76,3 +76,5 @@ def process_physics_telemetry():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port)
+web: gunicorn --bind 0.0.0.0:$PORT --workers 2 --chdir src main_api_gateway:app
+    
