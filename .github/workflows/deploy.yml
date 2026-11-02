@@ -1,0 +1,24 @@
+name: Deploy Odynex ScreeTC Core Infrastructure
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code Repository
+        uses: actions/checkout@v3
+
+      - name: Configure Secure SSH Connectivity
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ODYNEX_PROD_HOST }}
+          username: ${{ secrets.ODYNEX_PROD_USER }}
+          key: ${{ secrets.ODYNEX_PROD_SSH_KEY }}
+          script: |
+            cd /opt/odynex-screetc-core
+            git pull origin main
+            docker compose down
+            docker compose up -d --build
