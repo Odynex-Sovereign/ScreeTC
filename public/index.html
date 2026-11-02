@@ -3,42 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScreeTC | Odynex Axis Logistics LLC</title>
+    <title>ScreeTC Gateway Hub | Odynex Axis Logistics LLC</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0f19; color: #f3f4f6; margin: 0; padding: 0; }
-        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(180deg, #0b0f19 0%, #111827 100%); }
-        h1 { color: #10b981; font-size: 3.5rem; margin-bottom: 10px; }
-        p { font-size: 1.2rem; color: #9ca3af; max-width: 700px; margin: 0 auto 30px; }
-        .cta-button { background-color: #10b981; color: #fff; padding: 15px 40px; border: none; font-size: 1.1rem; border-radius: 5px; cursor: pointer; text-decoration: none; font-weight: bold; }
-        .cta-button:hover { background-color: #059669; }
-        .matrix { display: flex; justify-content: center; gap: 30px; max-width: 1200px; margin: 50px auto; padding: 0 20px; }
-        .tier { background-color: #1f2937; padding: 30px; border-radius: 8px; width: 30%; border: 1px solid #374151; }
-        .tier h3 { color: #34d399; margin-top: 0; }
-        .price { font-size: 1.8rem; font-weight: bold; margin: 20px 0; color: #fff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #080c14; color: #e5e7eb; margin: 0; padding: 40px 20px; }
+        .wrapper { max-width: 1100px; margin: 0 auto; text-align: center; }
+        h1 { color: #10b981; font-size: 2.8rem; margin-bottom: 8px; }
+        .lead { color: #9ca3af; font-size: 1.15rem; margin-bottom: 40px; max-width: 750px; margin-left: auto; margin-right: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 20px; }
+        .card { background-color: #111827; border: 1px solid #374151; border-radius: 12px; padding: 32px; text-align: left; transition: transform 0.2s, border-color 0.2s; }
+        .card:hover { transform: translateY(-4px); border-color: #10b981; }
+        .badge { background-color: rgba(16, 185, 129, 0.1); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; inline-size: max-content; margin-bottom: 16px; }
+        .cost { font-size: 2.2rem; font-weight: bold; margin: 24px 0 12px; color: #ffffff; }
+        .btn { display: block; text-align: center; background-color: #10b981; color: #ffffff; padding: 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 1rem; margin-top: 24px; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
+        .btn:hover { background-color: #059669; }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>ScreeTC Physics Infrastructure</h1>
-        <p>Real-Time Fluid Telemetry and Runtime Physics-ML Cloud APIs. Built for autonomous fleets, green data centers, and heavy industry. Secure, Zero-Knowledge data processing protected under TUTSA guidelines.</p>
-        <button class="cta-button" onclick="window.location.href='/signup'">Deploy Your Fleet Core</button>
-    </div>
-    <div class="matrix">
-        <div class="tier">
-            <h3>Axis Stream</h3>
-            <p>Best for drone logistics fleets and software developers.</p>
-            <div class="price">$0.005 <span style="font-size:1rem;color:#9ca3af;">/ frame</span></div>
-        </div>
-        <div class="tier">
-            <h3>Sovereign Gateway</h3>
-            <p>Best for smart city municipal grids and regional data hubs.</p>
-            <div class="price">$4,500 <span style="font-size:1rem;color:#9ca3af;">/ month</span></div>
-        </div>
-        <div class="tier">
-            <h3>Odynex Core</h3>
-            <p>Best for aerospace defense and elite automotive racing.</p>
-            <div class="price">Custom <span style="font-size:1rem;color:#9ca3af;">/ enterprise</span></div>
+    <div class="wrapper">
+        <h1>ScreeTC Architecture Gateway</h1>
+        <p class="lead">Real-time physics engine utility layers optimized for high-velocity logistics tracking systems. Deploy secure, zero-knowledge structural telemetry channels instantly.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="badge">AXIS STREAM</div>
+                <p>Designed for logistics fleets, autonomous systems, and real-time UAV navigation tracks.</p>
+                <div class="cost">$0.005 <span style="font-size: 1rem; color: #9ca3af;">/ computed frame</span></div>
+                <button class="btn" onclick="initializeCheckout('axis_stream')">Provision API Core</button>
+            </div>
+
+            <div class="card">
+                <div class="badge">SOVEREIGN GATEWAY</div>
+                <p>Isolated cloud environments optimized for smart city grids and municipal thermal monitoring networks.</p>
+                <div class="cost">$4,500 <span style="font-size: 1rem; color: #9ca3af;">/ month</span></div>
+                <button class="btn" onclick="initializeCheckout('sovereign_gateway')">Deploy Cluster Node</button>
+            </div>
         </div>
     </div>
+
+    <script>
+        function initializeCheckout(selectedTier) {
+            console.log("Routing entity setup vectors directly to transactional gateways...");
+            // Automated redirect passing parameters directly to localized secure sessions
+            window.location.href = `/v1/checkout?tier=${selectedTier}`;
+        }
+    </script>
 </body>
 </html>
