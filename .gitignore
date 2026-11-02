@@ -1,0 +1,16 @@
+# Python operational caches
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# AI Model Files & Datasets (Kept out of Git to protect secrets under TUTSA)
+models/screetc_pinn/**/*.bin
+models/screetc_pinn/**/*.onnx
+models/screetc_pinn/**/*.pt
+
+# System Configuration Secrets
+.env
+*.pem
+*.key
