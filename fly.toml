@@ -1,9 +1,6 @@
 app = "screetc"
 primary_region = "dfw"
 
-[build]
-  builder = "heroku/buildpacks:20" # Standard automated runtime engine
-
 [env]
   PORT = "8080"
 
@@ -23,4 +20,4 @@ primary_region = "dfw"
   [services.concurrency]
     type = "connections"
     hard_limit = 25
-    soft_limit = 20
+    soft_limit= 20
