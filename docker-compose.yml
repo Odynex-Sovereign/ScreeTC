@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  screetc-inference-core:
+    image: nvcr.io/nvidia/tritoninferenceserver:24.01-py3
+    container_name: odynex_screetc_inference_node
+    volumes:
+      - ./models:/models
+    ports:
+      - "8000:8000"  # HTTP REST API
+      - "8001:8001"  # gRPC Performance Port
+      - "8002:8002"  # Metrics Server
+    environment:
+      - TRITON_SERVER_MODEL_REPOSITORY=/models
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  screetc-api-gateway:
+    image: nginx:alpine
+    container_name: odynex_screetc_secure_gateway
+    ports:
+      - "443:443"
+    depends_on:
+      - screetc-inference-core
+    restart: always
