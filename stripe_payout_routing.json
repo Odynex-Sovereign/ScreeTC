@@ -1,0 +1,21 @@
+{
+  "merchant_account": {
+    "legal_entity_name": "Odynex Axis Logistics LLC",
+    "business_type": "llc",
+    "jurisdiction": "Texas, USA",
+    "payout_schedule": {
+      "interval": "daily",
+      "delay_days": 2
+    },
+    "external_accounts": [
+      {
+        "object": "bank_account",
+        "country": "US",
+        "currency": "usd",
+        "routing_number": "091017138",
+        "account_number_encrypted": "692101680084",
+        "bank_name": "Sunrise Banks, N.A."
+      }
+    ]
+  }
+}
