@@ -1,23 +1,20 @@
 app = "screetc"
-primary_region = "dfw"
+primary_region = "iad" # Swap to your closest GPU-enabled region if needed
 
-[env]
-  PORT = "8080"
+[build]
+  dockerfile = "Dockerfile"
+
+[vm]
+  size = "a10g"         # Configures Fly.io to provision an NVIDIA A10G GPU instance
+  memory = "16gb"       # Reallocate RAM to match requirements
+  cpus = 4
 
 [[services]]
-  protocol = "tcp"
-  internal_port = 8080
-  processes = ["app"]
-
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
-
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
+  http_service = true
+  internal_port = 8000  # Make sure this matches your main_api_gateway.py port
 
   [services.concurrency]
-    type = "connections"
+    groups = "app"
     hard_limit = 25
-    soft_limit= 20
+    soft_limit = 20
+    type = "connections"
