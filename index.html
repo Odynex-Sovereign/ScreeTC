@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScreeTC Gateway Hub | Odynex Axis Logistics LLC</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #080c14; color: #e5e7eb; margin: 0; padding: 40px 20px; }
+        .wrapper { max-width: 1100px; margin: 0 auto; text-align: center; }
+        h1 { color: #10b981; font-size: 2.8rem; margin-bottom: 8px; }
+        .lead { color: #9ca3af; font-size: 1.15rem; margin-bottom: 40px; max-width: 750px; margin-left: auto; margin-right: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 20px; }
+        .card { background-color: #111827; border: 1px solid #374151; border-radius: 12px; padding: 32px; text-align: left; transition: transform 0.2s, border-color 0.2s; }
+        .card:hover { transform: translateY(-4px); border-color: #10b981; }
+        .badge { background-color: rgba(16, 185, 129, 0.1); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; inline-size: max-content; margin-bottom: 16px; }
+        .cost { font-size: 2.2rem; font-weight: bold; margin: 24px 0 12px; color: #ffffff; }
+        .btn { display: block; text-align: center; background-color: #10b981; color: #ffffff; padding: 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 1rem; margin-top: 24px; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
+        .btn:hover { background-color: #059669; }
+        .btn:disabled { opacity: 0.6; cursor: wait; }
+        .notice { color: #fbbf24; font-size: 0.9rem; margin-top: 12px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>ScreeTC Architecture Gateway</h1>
+        <p class="lead">Real-time physics engine utility layers optimized for high-velocity logistics tracking systems. Deploy secure, zero-knowledge structural telemetry channels instantly.</p>
+
+        <div class="grid">
+            <div class="card">
+                <div class="badge">AXIS STREAM</div>
+                <p>Designed for logistics fleets, autonomous systems, and real-time UAV navigation tracks.</p>
+                <div class="cost">$5 <span style="font-size: 1rem; color: #9ca3af;">/ month starter</span></div>
+                <button class="btn" id="btn-axis" onclick="initializeCheckout('axis_stream')">Provision API Core</button>
+                <p class="notice" id="notice-axis"></p>
+            </div>
+
+            <div class="card">
+                <div class="badge">SOVEREIGN GATEWAY</div>
+                <p>Isolated cloud environments optimized for smart city grids and municipal thermal monitoring networks.</p>
+                <div class="cost">$4,500 <span style="font-size: 1rem; color: #9ca3af;">/ month</span></div>
+                <button class="btn" id="btn-sovereign" onclick="initializeCheckout('sovereign_gateway')">Deploy Cluster Node</button>
+                <p class="notice" id="notice-sovereign"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function initializeCheckout(selectedTier) {
+            const btn = document.getElementById(selectedTier === 'axis_stream' ? 'btn-axis' : 'btn-sovereign');
+            const notice = document.getElementById(selectedTier === 'axis_stream' ? 'notice-axis' : 'notice-sovereign');
+            btn.disabled = true;
+            notice.style.display = 'none';
+            notice.textContent = '';
+
+            try {
+                const res = await fetch(`/v1/checkout?tier=${encodeURIComponent(selectedTier)}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+                if (!res.ok || !data.url) {
+                    throw new Error(data.message || 'Unable to start Checkout');
+                }
+                window.location.href = data.url;
+            } catch (err) {
+                notice.textContent = err.message || 'Checkout unavailable. Check server configuration.';
+                notice.style.display = 'block';
+                btn.disabled = false;
+            }
+        }
+
+        // Surface cancel notice from Stripe cancel_url
+        if (new URLSearchParams(window.location.search).get('canceled') === '1') {
+            console.info('Checkout was canceled by the user.');
+        }
+    </script>
+</body>
+</html>

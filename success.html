@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Successful | Odynex Axis Logistics LLC</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0f19; color: #f3f4f6; text-align: center; padding: 100px 20px; }
+        .card { background-color: #1f2937; padding: 40px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #10b981; }
+        h1 { color: #10b981; margin-top: 0; }
+        code { background-color: #111827; padding: 10px 15px; display: block; margin: 20px 0; border-radius: 4px; color: #34d399; font-family: monospace; font-size: 1.1rem; word-break: break-all; }
+        a { color: #34d399; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Payment Configuration Complete</h1>
+        <p>Your billing account has been linked to the <strong>ScreeTC</strong> pricing engine. Transaction settlement is handled securely by Stripe.</p>
+        <p>Use your Stripe Customer ID as <code>customer_stripe_id</code> when calling the <code>/v1/flow</code> telemetry API.</p>
+        <p id="session-info" style="color: #9ca3af; font-size: 0.9rem;"></p>
+        <p><a href="/">← Return to Gateway</a></p>
+    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const sid = params.get('session_id');
+        if (sid) {
+            document.getElementById('session-info').textContent =
+                'Checkout session: ' + sid + ' (store your Stripe Customer ID from the Stripe Dashboard or webhook).';
+        }
+    </script>
+</body>
+</html>
