@@ -18,3 +18,39 @@ primary_region = "iad" # Swap to your closest GPU-enabled region if needed
     hard_limit = 25
     soft_limit = 20
     type = "connections"
+app = "screetc"
+primary_region = "iad" # Use your closest GPU-enabled region
+
+[build]
+  dockerfile = "Dockerfile"
+
+[vm]
+  size = "a10g"         # Allocates your NVIDIA GPU instance
+  memory = "16gb"       
+  cpus = 4
+
+[[services]]
+  internal_port = 8000  # The port your python main_api_gateway.py listens on
+  protocol = "tcp"
+
+  [services.concurrency]
+    groups = "app"
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  # Map incoming secure web traffic over port 443 down to your API gateway
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  # Map incoming unsecured traffic on port 80 and force redirect to HTTPS
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+    force_https = true
+
+  [[services.tcp_checks]]
+    grace_period = "15s"
+    interval = "15s"
+    timeout= "2s"
