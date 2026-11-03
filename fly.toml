@@ -1,36 +1,16 @@
 app = "screetc"
-primary_region = "iad" # Swap to your closest GPU-enabled region if needed
+primary_region = "iad" # Replace with your chosen GPU-capable edge region
 
 [build]
   dockerfile = "Dockerfile"
 
 [vm]
-  size = "a10g"         # Configures Fly.io to provision an NVIDIA A10G GPU instance
-  memory = "16gb"       # Reallocate RAM to match requirements
+  size = "a10g"         # Provisions an NVIDIA A10G Tensor Core GPU
+  memory = "16gb"       # Allocates system memory for large AI model weights
   cpus = 4
 
 [[services]]
-  http_service = true
-  internal_port = 8000  # Make sure this matches your main_api_gateway.py port
-
-  [services.concurrency]
-    groups = "app"
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
-app = "screetc"
-primary_region = "iad" # Use your closest GPU-enabled region
-
-[build]
-  dockerfile = "Dockerfile"
-
-[vm]
-  size = "a10g"         # Allocates your NVIDIA GPU instance
-  memory = "16gb"       
-  cpus = 4
-
-[[services]]
-  internal_port = 8000  # The port your python main_api_gateway.py listens on
+  internal_port = 8000  # The port main_api_gateway.py listens on
   protocol = "tcp"
 
   [services.concurrency]
@@ -39,18 +19,19 @@ primary_region = "iad" # Use your closest GPU-enabled region
     soft_limit = 20
     type = "connections"
 
-  # Map incoming secure web traffic over port 443 down to your API gateway
+  # Terminate HTTPS/TLS traffic at the Fly Edge and route to your API gateway
   [[services.ports]]
     handlers = ["tls", "http"]
     port = 443
 
-  # Map incoming unsecured traffic on port 80 and force redirect to HTTPS
+  # Accept standard HTTP traffic and force upgrade it to secure HTTPS
   [[services.ports]]
     handlers = ["http"]
     port = 80
     force_https = true
 
+  # TCP health check to verify your physics orchestration engine is alive
   [[services.tcp_checks]]
-    grace_period = "15s"
+    grace_period = "30s" # Gives the heavy NVIDIA runtime ample time to boot up
     interval = "15s"
-    timeout= "2s"
+    timeout= "5s"
