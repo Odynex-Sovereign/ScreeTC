@@ -3,57 +3,432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScreeTC Gateway Hub | Odynex Axis Logistics LLC</title>
+    <title>ScreeTC — Physics Infrastructure</title>
+    <meta name="description" content="ScreeTC virtualizes real-world fluid dynamics and thermal flows into sub-millisecond cloud APIs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #080c14; color: #e5e7eb; margin: 0; padding: 40px 20px; }
-        .wrapper { max-width: 1100px; margin: 0 auto; text-align: center; }
-        h1 { color: #10b981; font-size: 2.8rem; margin-bottom: 8px; }
-        .lead { color: #9ca3af; font-size: 1.15rem; margin-bottom: 40px; max-width: 750px; margin-left: auto; margin-right: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 20px; }
-        .card { background-color: #111827; border: 1px solid #374151; border-radius: 12px; padding: 32px; text-align: left; transition: transform 0.2s, border-color 0.2s; }
-        .card:hover { transform: translateY(-4px); border-color: #10b981; }
-        .badge { background-color: rgba(16, 185, 129, 0.1); color: #34d399; padding: 4px 12px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; inline-size: max-content; margin-bottom: 16px; }
-        .cost { font-size: 2.2rem; font-weight: bold; margin: 24px 0 12px; color: #ffffff; }
-        .btn { display: block; text-align: center; background-color: #10b981; color: #ffffff; padding: 12px; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 1rem; margin-top: 24px; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
-        .btn:hover { background-color: #059669; }
-        .btn:disabled { opacity: 0.6; cursor: wait; }
-        .notice { color: #fbbf24; font-size: 0.9rem; margin-top: 12px; display: none; }
+        :root {
+            --bg: #070b12;
+            --bg-card: #0e1520;
+            --bg-card-hover: #121b28;
+            --border: #1e2a3a;
+            --border-glow: rgba(16, 185, 129, 0.45);
+            --cyan: #2dd4bf;
+            --cyan-bright: #5eead4;
+            --emerald: #10b981;
+            --emerald-dim: rgba(16, 185, 129, 0.12);
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --danger: #f87171;
+            --radius: 16px;
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent 55%),
+                radial-gradient(ellipse 40% 30% at 90% 80%, rgba(45, 212, 191, 0.06), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 24px 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .logo-wrap {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .logo {
+            width: 96px;
+            height: 96px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 24px rgba(45, 212, 191, 0.35));
+        }
+
+        .brand-name {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #e2e8f0 0%, #5eead4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .hero-title {
+            font-size: clamp(1.6rem, 4vw, 2.35rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            background: linear-gradient(90deg, var(--cyan), var(--emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-lead {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 12px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px 32px;
+            text-align: left;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, background 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .card:hover {
+            border-color: var(--border-glow);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        .card.featured {
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .card.featured::after {
+            content: "POPULAR";
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--emerald);
+            background: var(--emerald-dim);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--emerald-dim);
+            color: var(--cyan-bright);
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .card p.desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+            min-height: 3.2em;
+        }
+
+        .price {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .price .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: #fff;
+        }
+
+        .price .period {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .features {
+            list-style: none;
+            margin: 24px 0 28px;
+            padding: 0;
+        }
+
+        .features li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 7px 0;
+            padding-left: 22px;
+            position: relative;
+        }
+
+        .features li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--emerald-dim);
+            box-shadow: inset 0 0 0 2px var(--cyan);
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s, background 0.2s;
+            text-decoration: none;
+            color: #04120c;
+            background: linear-gradient(135deg, #2dd4bf 0%, #10b981 100%);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
+            background: linear-gradient(135deg, #5eead4 0%, #34d399 100%);
+        }
+
+        .btn:active:not(:disabled) { transform: translateY(0); }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+            box-shadow: none;
+        }
+
+        .btn .arrow {
+            font-size: 1.15rem;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover:not(:disabled) .arrow { transform: translateX(3px); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cyan-bright);
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--emerald-dim);
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+        }
+
+        .notice {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 12px;
+            display: none;
+            text-align: center;
+        }
+
+        footer {
+            margin-top: 64px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        footer .pillars {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px 28px;
+            margin-bottom: 20px;
+        }
+
+        footer .pillars span {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        footer a { color: var(--cyan); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 640px) {
+            .page { padding: 32px 16px 56px; }
+            .card { padding: 28px 22px; }
+            .price .amount { font-size: 2.1rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h1>ScreeTC Architecture Gateway</h1>
-        <p class="lead">Real-time physics engine utility layers optimized for high-velocity logistics tracking systems. Deploy secure, zero-knowledge structural telemetry channels instantly.</p>
+    <div class="page">
+        <header>
+            <div class="logo-wrap">
+                <img class="logo" src="/logo.jpg" alt="ScreeTC logo" width="96" height="96">
+                <div class="brand-name">ScreeTC</div>
+                <div class="brand-tag">Physics Infrastructure</div>
+            </div>
+            <h1 class="hero-title">The live physical telemetry layer<br>for <span>global industry</span></h1>
+            <p class="hero-lead">
+                Virtualize fluid dynamics and thermal flows into sub-millisecond cloud APIs.
+                Secure, scalable, zero-knowledge physical IaaS.
+            </p>
+        </header>
 
         <div class="grid">
-            <div class="card">
-                <div class="badge">AXIS STREAM</div>
-                <p>Designed for logistics fleets, autonomous systems, and real-time UAV navigation tracks.</p>
-                <div class="cost">$5 <span style="font-size: 1rem; color: #9ca3af;">/ month starter</span></div>
-                <button class="btn" id="btn-axis" onclick="initializeCheckout('axis_stream')">Provision API Core</button>
-                <p class="notice" id="notice-axis"></p>
-            </div>
+            <article class="card featured">
+                <div class="badge">Axis Stream</div>
+                <h2>API Core</h2>
+                <p class="desc">Usage-ready physics telemetry for logistics fleets, UAV navigation, and autonomous systems.</p>
+                <div class="price">
+                    <span class="amount">$5</span>
+                    <span class="period">/ month starter</span>
+                </div>
+                <ul class="features">
+                    <li>Real-time aerodynamic vectoring</li>
+                    <li>Metered frame compute</li>
+                    <li>Stripe-secured billing</li>
+                    <li>SDK + REST access</li>
+                </ul>
+                <button class="btn" id="btn-axis" type="button" onclick="initializeCheckout('axis_stream')">
+                    Provision API Core
+                    <span class="arrow" aria-hidden="true">→</span>
+                </button>
+                <p class="notice" id="notice-axis" role="alert"></p>
+            </article>
 
-            <div class="card">
-                <div class="badge">SOVEREIGN GATEWAY</div>
-                <p>Isolated cloud environments optimized for smart city grids and municipal thermal monitoring networks.</p>
-                <div class="cost">$4,500 <span style="font-size: 1rem; color: #9ca3af;">/ month</span></div>
-                <button class="btn" id="btn-sovereign" onclick="initializeCheckout('sovereign_gateway')">Deploy Cluster Node</button>
-                <p class="notice" id="notice-sovereign"></p>
-            </div>
+            <article class="card">
+                <div class="badge">Sovereign Gateway</div>
+                <h2>Cluster Node</h2>
+                <p class="desc">Isolated regional capacity for smart-city grids, municipal thermal networks, and high-volume fleets.</p>
+                <div class="price">
+                    <span class="amount">$4,500</span>
+                    <span class="period">/ month</span>
+                </div>
+                <ul class="features">
+                    <li>Region-isolated clusters</li>
+                    <li>Predictive climate control</li>
+                    <li>Dedicated throughput</li>
+                    <li>Priority support path</li>
+                </ul>
+                <button class="btn btn-secondary" id="btn-sovereign" type="button" onclick="initializeCheckout('sovereign_gateway')">
+                    Deploy Cluster Node
+                    <span class="arrow" aria-hidden="true">→</span>
+                </button>
+                <p class="notice" id="notice-sovereign" role="alert"></p>
+            </article>
         </div>
+
+        <footer>
+            <div class="pillars">
+                <span>Secure</span>
+                <span>Scalable</span>
+                <span>Zero-Knowledge</span>
+                <span>Physical IaaS</span>
+            </div>
+            <p>
+                © Odynex Axis Logistics LLC ·
+                <a href="https://screetc.com" target="_blank" rel="noopener">screetc.com</a>
+            </p>
+        </footer>
     </div>
 
     <script>
         async function initializeCheckout(selectedTier) {
-            const btn = document.getElementById(selectedTier === 'axis_stream' ? 'btn-axis' : 'btn-sovereign');
-            const notice = document.getElementById(selectedTier === 'axis_stream' ? 'notice-axis' : 'notice-sovereign');
+            const isAxis = selectedTier === 'axis_stream';
+            const btn = document.getElementById(isAxis ? 'btn-axis' : 'btn-sovereign');
+            const notice = document.getElementById(isAxis ? 'notice-axis' : 'notice-sovereign');
+            const originalLabel = btn.innerHTML;
+
             btn.disabled = true;
+            btn.innerHTML = 'Connecting to Stripe…';
             notice.style.display = 'none';
             notice.textContent = '';
 
             try {
-                const res = await fetch(`/v1/checkout?tier=${encodeURIComponent(selectedTier)}`, {
+                const res = await fetch('/v1/checkout?tier=' + encodeURIComponent(selectedTier), {
                     method: 'GET',
                     headers: { 'Accept': 'application/json' }
                 });
@@ -66,10 +441,10 @@
                 notice.textContent = err.message || 'Checkout unavailable. Check server configuration.';
                 notice.style.display = 'block';
                 btn.disabled = false;
+                btn.innerHTML = originalLabel;
             }
         }
 
-        // Surface cancel notice from Stripe cancel_url
         if (new URLSearchParams(window.location.search).get('canceled') === '1') {
             console.info('Checkout was canceled by the user.');
         }
