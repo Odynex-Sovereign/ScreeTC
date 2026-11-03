@@ -1,42 +1,33 @@
-FROM python:3.10-slim
+# Stage 1: Build & Dependency resolution using NVIDIA PyTorch/CUDA stack
+FROM nvcr.io/nvidia/pytorch:23.08-py3 AS builder
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Force CUDA extensions to build with proper target configurations
+ENV CUDA_HOME=/usr/local/cuda
+ENV PATH=${CUDA_HOME}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 
-# Copy configuration and install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt
 
-# Copy application source code
-COPY . .
-
-# Expose operational container routing port
-EXPOSE 8080
-
-# Explicitly invoke Gunicorn to bind to the runtime environment port
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--chdir", "src", "main_api_gateway:app"]
-FROM python:3.10-slim
+# Stage 2: Runtime Production Image
+FROM nvcr.io/nvidia/pytorch:23.08-py3
 
 WORKDIR /app
 
-# Install bare minimum compilation tools
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Expose required runtime target variables to ensure Triton/Modulus find hardware
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
-# Copy configuration and install libraries 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy over python package dependencies from builder stage
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
 
-# Copy source repository structure
+# Copy infrastructure files
 COPY . .
 
-# Expose dynamic cloud routing port
-EXPOSE 8080
+EXPOSE 8000
 
-# Execute Gunicorn by navigating into src directory natively
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "--chdir", "src", "main_api_gateway:app"]
+# Fire up your main API Gateway framework
+CMD ["python", "main_api_gateway.py"]
