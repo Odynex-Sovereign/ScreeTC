@@ -1,16 +1,17 @@
 app = "screetc"
-primary_region = "iad" # Replace with your chosen GPU-capable edge region
+primary_region = "iad" # Replace with your target GPU-capable region (e.g., iad, ams, sfo)
 
 [build]
   dockerfile = "Dockerfile"
 
-[vm]
-  size = "a10g"         # Provisions an NVIDIA A10G Tensor Core GPU
-  memory = "16gb"       # Allocates system memory for large AI model weights
-  cpus = 4
+[[vm]]
+  size = "performance-4x" # Sets the valid performance CPU hardware preset
+  memory = "16gb"         # Allocates 16GB of system RAM
+  cpus = 4                # Provisions 4 dedicated vCPUs
+  gpu_kind = "a10g"       # Correctly maps the NVIDIA A10G Tensor Core GPU accelerator
 
 [[services]]
-  internal_port = 8000  # The port main_api_gateway.py listens on
+  internal_port = 8000  # Maps to the port exposed by main_api_gateway.py
   protocol = "tcp"
 
   [services.concurrency]
@@ -19,19 +20,19 @@ primary_region = "iad" # Replace with your chosen GPU-capable edge region
     soft_limit = 20
     type = "connections"
 
-  # Terminate HTTPS/TLS traffic at the Fly Edge and route to your API gateway
+  # Handles incoming secure HTTPS connections on port 443
   [[services.ports]]
     handlers = ["tls", "http"]
     port = 443
 
-  # Accept standard HTTP traffic and force upgrade it to secure HTTPS
+  # Handles standard HTTP on port 80 and auto-redirects to secure HTTPS
   [[services.ports]]
     handlers = ["http"]
     port = 80
     force_https = true
 
-  # TCP health check to verify your physics orchestration engine is alive
+  # TCP health check block to verify the gateway engine has booted successfully
   [[services.tcp_checks]]
-    grace_period = "30s" # Gives the heavy NVIDIA runtime ample time to boot up
+    grace_period = "30s" # Gives the heavy CUDA/PyTorch stacks enough runway to initialize
     interval = "15s"
     timeout= "5s"
